@@ -1,18 +1,44 @@
-import { useContext, useEffect } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import { Direction, globalContext } from "../context";
 
 export const useArrowKeys = () => {
   const { state, dispatch } = useContext(globalContext);
 
+  const { currentDirection } = state;
 
+  const setDirection = useCallback((direction: Direction) => {
+    switch (direction) {
+      case Direction.Up:
+        if (currentDirection === Direction.Down) {
+          return;
+        }
+        break;
+      case Direction.Down:
+        if (currentDirection === Direction.Up) {
+          return;
+        }
+        break;
+      case Direction.Left:
+        if (currentDirection === Direction.Right) {
+          return;
+        }
+        break;
+      case Direction.Right:
+        if (currentDirection === Direction.Left) {
+          return;
+        }
+        break;
+      default:
+        break;
+    }
+    dispatch({
+      type: "SET_DIRECTION",
+      payload: direction,
+    })
+  }, [currentDirection, dispatch]);
 
   useEffect(() => {
-    const setDirection = (direction: Direction) => {
-      dispatch({
-        type: "SET_DIRECTION",
-        payload: direction,
-      });
-    }
+
 
     const handleKeyDown = (event: KeyboardEvent) => {
       switch (event.key) {
@@ -36,7 +62,7 @@ export const useArrowKeys = () => {
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     };
-  }, [dispatch]);
+  }, [setDirection]);
 
-  return state.currentDirection;
+  return currentDirection;
 };

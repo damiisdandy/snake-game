@@ -28,7 +28,7 @@ function App() {
       <Score />
       <div className="Game__wrapper">
         <GameScreen />
-        <Snake position={[position.x, position.y]} />
+        <Snake position={position} />
         <Apple />
       </div>
     </div>

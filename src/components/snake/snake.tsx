@@ -1,13 +1,44 @@
 import "./snake.scss";
 import { PIXEL_SIZE } from "../../config";
+import { useContext } from "react";
+import { Direction, Position, globalContext } from "../../context";
 
 type Props = {
-  position: [number, number];
+  position: Position;
 };
 
-const len = 5;
+const len = 10;
 
 const Snake = ({ position }: Props) => {
+  const {
+    state: { currentDirection },
+  } = useContext(globalContext);
+
+  const getStaggerPosition = (i: number) => {
+    switch (currentDirection) {
+      case Direction.Up:
+        return {
+          top: `${PIXEL_SIZE * position.y + i}rem`,
+          left: `${PIXEL_SIZE * position.x}rem`,
+        };
+      case Direction.Down:
+        return {
+          top: `${PIXEL_SIZE * position.y - i}rem`,
+          left: `${PIXEL_SIZE * position.x}rem`,
+        };
+      case Direction.Left:
+        return {
+          top: `${PIXEL_SIZE * position.y}rem`,
+          left: `${PIXEL_SIZE * position.x + i}rem`,
+        };
+      case Direction.Right:
+        return {
+          top: `${PIXEL_SIZE * position.y}rem`,
+          left: `${PIXEL_SIZE * position.x - i}rem`,
+        };
+    }
+  };
+
   return (
     <>
       {Array(len)
@@ -19,8 +50,7 @@ const Snake = ({ position }: Props) => {
             style={{
               width: `${PIXEL_SIZE}rem`,
               height: `${PIXEL_SIZE}rem`,
-              top: `${PIXEL_SIZE * position[1]}rem`,
-              left: `${PIXEL_SIZE * position[0] - i}rem`,
+              ...getStaggerPosition(i),
             }}
           ></div>
         ))}
