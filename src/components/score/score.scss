@@ -1,0 +1,13 @@
+.Score {
+  margin-bottom: 5rem;
+  text-align: center;
+  &__title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  &__number {
+    font-size: 5rem;
+    font-weight: 700;
+  }
+}

@@ -3,11 +3,12 @@ import { useEffect } from "react";
 import { GAME_SPEED } from "./config";
 import GameScreen from "./components/game-screen/game-screen";
 import Snake from "./components/snake/snake";
-import Apples from "./components/apples/apples";
+import Apple from "./components/apple/apple";
 import { useSnakePosition } from "./hooks/useSnakePosition";
 import { useArrowKeys } from "./hooks/useArrowKeys";
 
 import "./App.scss";
+import Score from "./components/score/score";
 
 function App() {
   const { position, moveSnake } = useSnakePosition();
@@ -24,10 +25,11 @@ function App() {
 
   return (
     <div className="App">
+      <Score />
       <div className="Game__wrapper">
         <GameScreen />
         <Snake position={[position.x, position.y]} />
-        <Apples />
+        <Apple />
       </div>
     </div>
   );
