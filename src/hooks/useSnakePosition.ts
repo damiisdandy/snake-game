@@ -18,7 +18,9 @@ const onScreenEdgeResetPosition = (position: number) => {
 export const useSnakePosition = () => {
   const { state, dispatch } = useContext(globalContext);
 
-  const { snakePosition } = state;
+  const { snakePositions } = state;
+
+  const snakesHead = snakePositions[0];
 
   const setSnakePosition = (position: Position) => {
     dispatch({
@@ -31,26 +33,26 @@ export const useSnakePosition = () => {
     switch (direction) {
       case Direction.Up:
         setSnakePosition({
-          x: snakePosition.x,
-          y: onScreenEdgeResetPosition(snakePosition.y - 1)
+          x: snakesHead.x,
+          y: onScreenEdgeResetPosition(snakesHead.y - 1)
         });
         break;
       case Direction.Down:
         setSnakePosition({
-          x: snakePosition.x,
-          y: onScreenEdgeResetPosition(snakePosition.y + 1)
+          x: snakesHead.x,
+          y: onScreenEdgeResetPosition(snakesHead.y + 1)
         });
         break;
       case Direction.Left:
         setSnakePosition({
-          y: snakePosition.y,
-          x: onScreenEdgeResetPosition(snakePosition.x - 1)
+          y: snakesHead.y,
+          x: onScreenEdgeResetPosition(snakesHead.x - 1)
         });
         break;
       case Direction.Right:
         setSnakePosition({
-          y: snakePosition.y,
-          x: onScreenEdgeResetPosition(snakePosition.x + 1)
+          y: snakesHead.y,
+          x: onScreenEdgeResetPosition(snakesHead.x + 1)
         });
         break;
       default:
@@ -60,10 +62,8 @@ export const useSnakePosition = () => {
 
 
   return {
-    position: {
-      x: snakePosition.x,
-      y: snakePosition.y,
-    },
+    snakesHead,
+    bodyPositions: snakePositions,
     moveSnake,
   };
 }

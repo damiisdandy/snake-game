@@ -17,10 +17,12 @@ export enum Direction {
 }
 
 export type GlobalState = {
-  snakePosition: Position;
+  snakePositions: Position[];
   applePosition: Position;
   score: number;
   currentDirection: Direction;
+  isGamePaused: boolean;
+  isGameOver: boolean;
 };
 
 export type Actions =
@@ -37,19 +39,33 @@ export type Actions =
   | {
       type: "SET_DIRECTION";
       payload: Direction;
+    }
+  | {
+      type: "SET_POSITION_OF_DIRECTION_CHANGE";
+      payload: Position;
+    }
+  | {
+      type: "TOGGLE_PAUSE_GAME";
+    }
+  | {
+      type: "END_GAME";
     };
 
 export const INITIAL_STATE: GlobalState = {
-  snakePosition: {
-    x: 0,
-    y: 0,
-  },
+  snakePositions: [
+    {
+      x: 0,
+      y: 0,
+    },
+  ],
   applePosition: {
     x: 1,
     y: 1,
   },
   score: 0,
   currentDirection: Direction.Right,
+  isGameOver: false,
+  isGamePaused: false,
 };
 
 export const globalContext = createContext<{

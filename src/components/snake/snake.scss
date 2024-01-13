@@ -2,4 +2,7 @@
   position: absolute;
   background-color: #fff;
   z-index: 99;
+  &__dead {
+    position: absolute;
+  }
 }

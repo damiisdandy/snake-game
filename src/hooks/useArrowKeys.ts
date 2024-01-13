@@ -38,19 +38,21 @@ export const useArrowKeys = () => {
   }, [currentDirection, dispatch]);
 
   useEffect(() => {
-
-
     const handleKeyDown = (event: KeyboardEvent) => {
       switch (event.key) {
+        case 'w':
         case 'ArrowUp':
           setDirection(Direction.Up);
           break;
+        case 's':
         case 'ArrowDown':
           setDirection(Direction.Down);
           break;
+        case 'a':
         case 'ArrowLeft':
           setDirection(Direction.Left);
           break;
+        case 'd':
         case 'ArrowRight':
           setDirection(Direction.Right);
           break;

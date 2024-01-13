@@ -6,16 +6,13 @@ import { useSnakePosition } from "../../hooks/useSnakePosition";
 
 const Apples = () => {
   const { position: applePosition, eatApple } = useApples();
-  const { position: snakePosition } = useSnakePosition();
+  const { snakesHead } = useSnakePosition();
 
   useEffect(() => {
-    if (
-      applePosition.x === snakePosition.x &&
-      applePosition.y === snakePosition.y
-    ) {
+    if (applePosition.x === snakesHead.x && applePosition.y === snakesHead.y) {
       eatApple();
     }
-  }, [snakePosition, applePosition, eatApple]);
+  }, [snakesHead, applePosition, eatApple]);
 
   return (
     <div
