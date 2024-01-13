@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { PIXEL_COUNT_PER_ROW } from '../config'
+import { Position, globalContext } from "../context";
 
 const MOVEMENT_CONSTRAINT = PIXEL_COUNT_PER_ROW - 1; // 0 to 23
 
@@ -21,36 +22,42 @@ const onScreenEdgeResetPosition = (position: number) => {
 }
 
 export const useSnakePosition = () => {
-  const [snakePosition, setSnakePosition] = useState({
-    x: 0,
-    y: 0,
-  });
+  const { state, dispatch } = useContext(globalContext);
+
+  const { snakePosition } = state;
+
+  const setSnakePosition = (position: Position) => {
+    dispatch({
+      type: "MOVE_SNAKE",
+      payload: position,
+    })
+  }
 
   const moveSnake = (direction: Direction) => {
     switch (direction) {
       case Direction.Up:
-        setSnakePosition(({ x, y }) => ({
-          x,
-          y: onScreenEdgeResetPosition(y - 1)
-        }));
+        setSnakePosition({
+          x: snakePosition.x,
+          y: onScreenEdgeResetPosition(snakePosition.y - 1)
+        });
         break;
       case Direction.Down:
-        setSnakePosition(({ x, y }) => ({
-          x,
-          y: onScreenEdgeResetPosition(y + 1),
-        }));
+        setSnakePosition({
+          x: snakePosition.x,
+          y: onScreenEdgeResetPosition(snakePosition.y + 1)
+        });
         break;
       case Direction.Left:
-        setSnakePosition(({ x, y }) => ({
-          y,
-          x: onScreenEdgeResetPosition(x - 1)
-        }));
+        setSnakePosition({
+          y: snakePosition.y,
+          x: onScreenEdgeResetPosition(snakePosition.x - 1)
+        });
         break;
       case Direction.Right:
-        setSnakePosition(({ x, y }) => ({
-          y,
-          x: onScreenEdgeResetPosition(x + 1),
-        }));
+        setSnakePosition({
+          y: snakePosition.y,
+          x: onScreenEdgeResetPosition(snakePosition.x + 1)
+        });
         break;
       default:
         break;
@@ -59,7 +66,10 @@ export const useSnakePosition = () => {
 
 
   return {
-    position: snakePosition,
+    position: {
+      x: snakePosition.x,
+      y: snakePosition.y,
+    },
     moveSnake,
   };
 }

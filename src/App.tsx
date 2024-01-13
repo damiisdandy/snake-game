@@ -4,16 +4,14 @@ import { GAME_SPEED } from "./config";
 import GameScreen from "./components/game-screen/game-screen";
 import Snake from "./components/snake/snake";
 import Apples from "./components/apples/apples";
-import { Direction, useSnakePosition } from "./hooks/useSnakePosition";
+import { useSnakePosition } from "./hooks/useSnakePosition";
 import { useArrowKeys } from "./hooks/useArrowKeys";
 
 import "./App.scss";
-import { useDebounce } from "./hooks/useDebounce";
 
 function App() {
   const { position, moveSnake } = useSnakePosition();
-  const directionRaw = useArrowKeys();
-  const direction = useDebounce<Direction>(directionRaw, GAME_SPEED / 2);
+  const direction = useArrowKeys();
 
   useEffect(() => {
     const timer = setInterval(() => {
