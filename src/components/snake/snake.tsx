@@ -12,6 +12,7 @@ const Snake = ({ position }: Props) => {
     <>
       {Array(len)
         .fill(0)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .map((_, i) => (
           <div
             className="Snake"
@@ -19,7 +20,7 @@ const Snake = ({ position }: Props) => {
               width: `${PIXEL_SIZE}rem`,
               height: `${PIXEL_SIZE}rem`,
               top: `${PIXEL_SIZE * position[1]}rem`,
-              left: `${PIXEL_SIZE * position[0]}rem`,
+              left: `${PIXEL_SIZE * position[0] - i}rem`,
             }}
           ></div>
         ))}

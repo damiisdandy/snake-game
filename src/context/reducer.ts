@@ -19,6 +19,12 @@ export const globalReducer = (state: GlobalState, action: Actions): GlobalState 
         applePosition: generateRandomPosition(),
         score: state.score + 1,
       };
+    case "SET_DIRECTION": {
+      return {
+        ...state,
+        currentDirection: action.payload,
+      };
+    }
     default:
       return state;
   }

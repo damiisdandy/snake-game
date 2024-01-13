@@ -5,10 +5,22 @@ export type Position = {
   y: number;
 };
 
+export enum Direction {
+  // eslint-disable-next-line no-unused-vars
+  Up = "up",
+  // eslint-disable-next-line no-unused-vars
+  Down = "down",
+  // eslint-disable-next-line no-unused-vars
+  Left = "left",
+  // eslint-disable-next-line no-unused-vars
+  Right = "right",
+}
+
 export type GlobalState = {
   snakePosition: Position;
   applePosition: Position;
   score: number;
+  currentDirection: Direction;
 };
 
 export type Actions =
@@ -21,6 +33,10 @@ export type Actions =
     }
   | {
       type: "SET_APPLE_POSITION";
+    }
+  | {
+      type: "SET_DIRECTION";
+      payload: Direction;
     };
 
 export const INITIAL_STATE: GlobalState = {
@@ -33,6 +49,7 @@ export const INITIAL_STATE: GlobalState = {
     y: 1,
   },
   score: 0,
+  currentDirection: Direction.Right,
 };
 
 export const globalContext = createContext<{

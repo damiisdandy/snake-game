@@ -1,15 +1,9 @@
 import { useContext } from "react";
 import { PIXEL_COUNT_PER_ROW } from '../config'
-import { Position, globalContext } from "../context";
+import { Direction, Position, globalContext } from "../context";
 
 const MOVEMENT_CONSTRAINT = PIXEL_COUNT_PER_ROW - 1; // 0 to 23
 
-export enum Direction {
-  Up = 'up',
-  Down = 'down',
-  Left = 'left',
-  Right = 'right',
-}
 
 const onScreenEdgeResetPosition = (position: number) => {
   if (position < 0) {

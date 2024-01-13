@@ -1,10 +1,19 @@
-import { useEffect, useState } from "react";
-import { Direction } from "./useSnakePosition";
+import { useContext, useEffect } from "react";
+import { Direction, globalContext } from "../context";
 
 export const useArrowKeys = () => {
-  const [direction, setDirection] = useState<Direction>(Direction.Right);
+  const { state, dispatch } = useContext(globalContext);
+
+
 
   useEffect(() => {
+    const setDirection = (direction: Direction) => {
+      dispatch({
+        type: "SET_DIRECTION",
+        payload: direction,
+      });
+    }
+
     const handleKeyDown = (event: KeyboardEvent) => {
       switch (event.key) {
         case 'ArrowUp':
@@ -27,7 +36,7 @@ export const useArrowKeys = () => {
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     };
-  }, []);
+  }, [dispatch]);
 
-  return direction;
+  return state.currentDirection;
 };

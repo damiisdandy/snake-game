@@ -23,5 +23,6 @@ html {
 .Game {
   &__wrapper {
     position: relative;
+    overflow: hidden;
   }
 }
