@@ -1,4 +1,5 @@
 import type { Actions, GlobalState } from ".";
+import { INITIAL_STATE } from ".";
 import { generateRandomPosition } from "../utils";
 
 export const globalReducer = (state: GlobalState, action: Actions): GlobalState => {
@@ -31,6 +32,9 @@ export const globalReducer = (state: GlobalState, action: Actions): GlobalState 
       };
     }
     case "SET_DIRECTION": {
+      if (state.isGamePaused || state.isGameOver) {
+        return state;
+      }
       return {
         ...state,
         currentDirection: action.payload,
@@ -46,6 +50,12 @@ export const globalReducer = (state: GlobalState, action: Actions): GlobalState 
       return {
         ...state,
         isGameOver: true,
+      };
+    }
+    case "RESTART_GAME": {
+      return {
+        ...INITIAL_STATE,
+        applePosition: generateRandomPosition()
       };
     }
     default:

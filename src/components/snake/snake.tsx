@@ -1,7 +1,7 @@
 import "./snake.scss";
 import { PIXEL_SIZE } from "../../config";
 import { Direction, Position, globalContext } from "../../context";
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useContext } from "react";
 
 type Props = {
   bodyPositions: Position[];
@@ -9,7 +9,6 @@ type Props = {
 
 const Snake = ({ bodyPositions }: Props) => {
   const {
-    dispatch,
     state: { isGameOver, currentDirection },
   } = useContext(globalContext);
 
@@ -38,21 +37,6 @@ const Snake = ({ bodyPositions }: Props) => {
     }
   }, [currentDirection]);
 
-  // snake eats itself
-  useEffect(() => {
-    const snakeHead = bodyPositions[0];
-    const snakeBody = bodyPositions.slice(1);
-    if (
-      snakeBody.length > 1 &&
-      snakeBody.some(
-        (position) =>
-          `${position.x}${position.y}` === `${snakeHead.x}${snakeHead.y}`
-      )
-    ) {
-      dispatch({ type: "END_GAME" });
-    }
-  }, [bodyPositions, dispatch]);
-
   return (
     <>
       {bodyPositions.map((position, i) => (
@@ -64,8 +48,10 @@ const Snake = ({ bodyPositions }: Props) => {
             height: `${PIXEL_SIZE}rem`,
             top: `${PIXEL_SIZE * position.y}rem`,
             left: `${PIXEL_SIZE * position.x}rem`,
+            zIndex: bodyPositions.length - i,
           }}
         >
+          {i}
           {isGameOver && i === 0 && (
             <span
               className="Snake__dead"

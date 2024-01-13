@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { PIXEL_SIZE } from "../../config";
-import { useApples } from "../../hooks/useApples";
+import { useApple } from "../../hooks/useApple";
 import "./apple.scss";
 import { useSnakePosition } from "../../hooks/useSnakePosition";
 
 const Apples = () => {
-  const { position: applePosition, eatApple } = useApples();
+  const { position: applePosition, eatApple } = useApple();
   const { snakesHead } = useSnakePosition();
 
   useEffect(() => {

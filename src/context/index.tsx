@@ -49,6 +49,9 @@ export type Actions =
     }
   | {
       type: "END_GAME";
+    }
+  | {
+      type: "RESTART_GAME";
     };
 
 export const INITIAL_STATE: GlobalState = {

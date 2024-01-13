@@ -41,18 +41,22 @@ export const useArrowKeys = () => {
     const handleKeyDown = (event: KeyboardEvent) => {
       switch (event.key) {
         case 'w':
+        case 'W':
         case 'ArrowUp':
           setDirection(Direction.Up);
           break;
         case 's':
+        case 'S':
         case 'ArrowDown':
           setDirection(Direction.Down);
           break;
         case 'a':
+        case 'A':
         case 'ArrowLeft':
           setDirection(Direction.Left);
           break;
         case 'd':
+        case 'D':
         case 'ArrowRight':
           setDirection(Direction.Right);
           break;

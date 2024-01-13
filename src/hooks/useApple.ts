@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { globalContext } from "../context";
 
 
-export const useApples = () => {
+export const useApple = () => {
   const { state, dispatch } = useContext(globalContext);
 
   const { applePosition } = state;

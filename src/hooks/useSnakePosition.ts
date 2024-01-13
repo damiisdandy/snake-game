@@ -30,33 +30,50 @@ export const useSnakePosition = () => {
   }
 
   const moveSnake = (direction: Direction) => {
+    let newPosition: Position = {
+      x: 0,
+      y: 0,
+    };
     switch (direction) {
-      case Direction.Up:
-        setSnakePosition({
+      case Direction.Up: {
+        newPosition = {
           x: snakesHead.x,
           y: onScreenEdgeResetPosition(snakesHead.y - 1)
-        });
+        };
         break;
-      case Direction.Down:
-        setSnakePosition({
+      }
+      case Direction.Down: {
+        newPosition = {
           x: snakesHead.x,
           y: onScreenEdgeResetPosition(snakesHead.y + 1)
-        });
+        };
         break;
-      case Direction.Left:
-        setSnakePosition({
-          y: snakesHead.y,
-          x: onScreenEdgeResetPosition(snakesHead.x - 1)
-        });
+      }
+      case Direction.Left: {
+        newPosition = {
+          x: onScreenEdgeResetPosition(snakesHead.x - 1),
+          y: snakesHead.y
+        };
         break;
-      case Direction.Right:
-        setSnakePosition({
-          y: snakesHead.y,
-          x: onScreenEdgeResetPosition(snakesHead.x + 1)
-        });
+      }
+      case Direction.Right: {
+        newPosition = {
+          x: onScreenEdgeResetPosition(snakesHead.x + 1),
+          y: snakesHead.y
+        };
         break;
+      }
       default:
-        break;
+        throw new Error("Invalid direction");
+    }
+    if (newPosition) {
+      if (snakePositions.some(position => position.x === newPosition.x && position.y === newPosition.y)) {
+        dispatch({
+          type: "END_GAME",
+        })
+        return;
+      }
+      setSnakePosition(newPosition);
     }
   };
 
