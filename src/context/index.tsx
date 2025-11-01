@@ -1,4 +1,8 @@
 import { Dispatch, createContext } from "react";
+import {
+  BASE_GAME_SPEED,
+  OBSTACLE_INITIAL_THRESHOLD,
+} from "../config";
 
 export type Position = {
   x: number;
@@ -23,18 +27,40 @@ export type GlobalState = {
   currentDirection: Direction;
   isGamePaused: boolean;
   isGameOver: boolean;
+  pendingGrowth: number;
+  gameSpeed: number;
+  level: number;
+  highScore: number;
+  obstacles: Position[];
+  nextObstacleScore: number;
+  specialApple: SpecialApple | null;
+};
+
+export type SpecialApple = {
+  position: Position;
+  kind: "golden";
+  expiresAt: number;
 };
 
 export type Actions =
   | {
       type: "MOVE_SNAKE";
-      payload: Position;
+      payload: {
+        position: Position;
+        growBy?: number;
+      };
     }
   | {
       type: "EAT_APPLE";
+      payload: {
+        kind: "regular" | "golden";
+      };
     }
   | {
       type: "SET_APPLE_POSITION";
+      payload?: {
+        position?: Position;
+      };
     }
   | {
       type: "SET_DIRECTION";
@@ -52,6 +78,17 @@ export type Actions =
     }
   | {
       type: "RESTART_GAME";
+    }
+  | {
+      type: "SPAWN_SPECIAL_APPLE";
+      payload: SpecialApple;
+    }
+  | {
+      type: "DESPAWN_SPECIAL_APPLE";
+    }
+  | {
+      type: "SET_HIGH_SCORE";
+      payload: number;
     };
 
 export const INITIAL_STATE: GlobalState = {
@@ -69,6 +106,13 @@ export const INITIAL_STATE: GlobalState = {
   currentDirection: Direction.Right,
   isGameOver: false,
   isGamePaused: false,
+  pendingGrowth: 0,
+  gameSpeed: BASE_GAME_SPEED,
+  level: 1,
+  highScore: 0,
+  obstacles: [],
+  nextObstacleScore: OBSTACLE_INITIAL_THRESHOLD,
+  specialApple: null,
 };
 
 export const globalContext = createContext<{

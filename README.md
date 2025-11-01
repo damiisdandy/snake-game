@@ -1,14 +1,17 @@
 # Snake Game 🐍
 
-Built the classic snake game in React, using `<div></div>`, `scss` React Context and React hooks:
+Canvas-powered take on the classic snake game, built with React, SCSS, Context, and custom hooks.
 
-## Game Play
-![Gameplau](/src/assets/game.gif)
+## Gameplay
 
-## Need for Improvement
-1. currently `<div></div>` are used to render the game's UI, this can be optimized by using `<canvas></canvas>`
+![Gameplay](/src/assets/game.gif)
 
-2. A debouncer needs to be implemented during keypress (Directions).
+## Features
 
+- High-performance `<canvas>` renderer with neon grid and smooth motion.
+- Dynamic difficulty: levels increase speed, obstacles spawn as you score.
+- Golden apple power-up with timed bonus points and glow effect.
+- Persistent high-score tracking (local storage) and live HUD stats.
+- Keyboard shortcuts: `WASD`/arrow keys to steer, `ESC`/`P` to pause, `R` to restart.
 
 ### PRs are welcome :)
