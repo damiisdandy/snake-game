@@ -1,6 +1,7 @@
-import { useContext } from "react";
-import { PIXEL_COUNT_PER_ROW } from '../config'
+import { useContext, useMemo } from "react";
+import { PIXEL_COUNT_PER_ROW } from "../config";
 import { Direction, Position, globalContext } from "../context";
+import { positionsEqual } from "../utils";
 
 const MOVEMENT_CONSTRAINT = PIXEL_COUNT_PER_ROW - 1; // 0 to 23
 
@@ -18,16 +19,16 @@ const onScreenEdgeResetPosition = (position: number) => {
 export const useSnakePosition = () => {
   const { state, dispatch } = useContext(globalContext);
 
-  const { snakePositions } = state;
+  const {
+    snakePositions,
+    applePosition,
+    specialApple,
+    obstacles,
+  } = state;
 
   const snakesHead = snakePositions[0];
 
-  const setSnakePosition = (position: Position) => {
-    dispatch({
-      type: "MOVE_SNAKE",
-      payload: position,
-    })
-  }
+  const growAmount = useMemo(() => ({ regular: 1, golden: 3 }), []);
 
   const moveSnake = (direction: Direction) => {
     let newPosition: Position = {
@@ -66,14 +67,54 @@ export const useSnakePosition = () => {
       default:
         throw new Error("Invalid direction");
     }
-    if (newPosition) {
-      if (snakePositions.some(position => position.x === newPosition.x && position.y === newPosition.y)) {
-        dispatch({
-          type: "END_GAME",
-        })
-        return;
-      }
-      setSnakePosition(newPosition);
+    const ateRegularApple = positionsEqual(newPosition, applePosition);
+    const ateSpecialApple = specialApple
+      ? positionsEqual(newPosition, specialApple.position)
+      : false;
+
+    const growBy = (ateRegularApple ? growAmount.regular : 0) +
+      (ateSpecialApple ? growAmount.golden : 0);
+
+    const bodySegmentsToCheck =
+      growBy === 0 && snakePositions.length > 1
+        ? snakePositions.slice(0, -1)
+        : snakePositions;
+
+    const collidedWithSelf = bodySegmentsToCheck.some((position) =>
+      positionsEqual(position, newPosition)
+    );
+
+    const collidedWithObstacle = obstacles.some((position) =>
+      positionsEqual(position, newPosition)
+    );
+
+    if (collidedWithSelf || collidedWithObstacle) {
+      dispatch({
+        type: "END_GAME",
+      });
+      return;
+    }
+
+    dispatch({
+      type: "MOVE_SNAKE",
+      payload: {
+        position: newPosition,
+        growBy,
+      },
+    });
+
+    if (ateRegularApple) {
+      dispatch({
+        type: "EAT_APPLE",
+        payload: { kind: "regular" },
+      });
+    }
+
+    if (ateSpecialApple && specialApple) {
+      dispatch({
+        type: "EAT_APPLE",
+        payload: { kind: specialApple.kind },
+      });
     }
   };
 
